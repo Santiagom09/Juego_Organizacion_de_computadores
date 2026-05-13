@@ -1,0 +1,59 @@
+class MapRenderer {
+
+    field Map map;       // Referencia al mapa logico
+    field int cellSize;  // Tamano 8x8 pixeles
+    field int originX;   // Coordenada X de inicio del mapa en pantalla
+    field int originY;   // Coordenada Y de inicio del mapa en pantalla
+
+
+    constructor MapRenderer new(Map aMap, int x, int y) {
+        let map      = aMap;
+        let cellSize = 8;
+        let originX  = x;
+        let originY  = y;
+        return this;
+    }
+
+
+    method void drawMap() {
+        var int row;
+        var int col;
+        var int cellValue;
+        var int pixelX;
+        var int pixelY;
+
+        let row = 0;
+        while (row < map.getRows()) {
+            let col = 0;
+            while (col < map.getCols()) {
+                let cellValue = map.getCell(row, col);
+                let pixelX   = originX + (col * cellSize);
+                let pixelY   = originY + (row * cellSize);
+
+                if (cellValue = 1) {
+                    do drawCell(pixelX, pixelY, true);
+                } else {
+                    do drawCell(pixelX, pixelY, false);
+                }
+
+                let col = col + 1;
+            }
+            let row = row + 1;
+        }
+        return;
+    }
+
+	
+    //Dibujo de cada celda
+    method void drawCell(int x, int y, boolean filled) {
+        do Screen.setColor(filled);
+        do Screen.drawRectangle(x, y, x + cellSize - 1, y + cellSize - 1);
+        return;
+    }
+
+    //Liberar memoria
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+}

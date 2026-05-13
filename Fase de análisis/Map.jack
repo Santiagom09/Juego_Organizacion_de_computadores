@@ -1,0 +1,126 @@
+class Map {
+
+    field Array grid;  // Array plano de 512 celdas (32 cols x 16 filas)
+    field int rows;    // Numero de filas: 16
+    field int cols;    // Numero de columnas: 32
+
+    constructor Map new() {
+        var int i;
+
+        let rows = 16;
+        let cols = 32;
+        let grid = Array.new(512);
+
+        // Inicializar todas las celdas como camino (0)
+        let i = 0;
+        while (i < 512) {
+            let grid[i] = 0;
+            let i = i + 1;
+        }
+
+
+        //Diseno laberinto
+        do setCell(0, 0, 1);  do setCell(0, 1, 1);  do setCell(0, 2, 1);
+        do setCell(0, 3, 1);  do setCell(0, 4, 1);  do setCell(0, 5, 1);
+        do setCell(0, 6, 1);  do setCell(0, 7, 1);  do setCell(0, 8, 1);
+        do setCell(0, 9, 1);  do setCell(0, 10, 1); do setCell(0, 11, 1);
+        do setCell(0, 12, 1); do setCell(0, 13, 1); do setCell(0, 14, 1);
+        do setCell(0, 15, 1); do setCell(0, 16, 1); do setCell(0, 17, 1);
+        do setCell(0, 18, 1); do setCell(0, 19, 1); do setCell(0, 20, 1);
+        do setCell(0, 21, 1); do setCell(0, 22, 1); do setCell(0, 23, 1);
+        do setCell(0, 24, 1); do setCell(0, 25, 1); do setCell(0, 26, 1);
+        do setCell(0, 27, 1); do setCell(0, 28, 1); do setCell(0, 29, 1);
+        do setCell(0, 30, 1); do setCell(0, 31, 1);
+
+        do setCell(15, 0, 1);  do setCell(15, 1, 1);  do setCell(15, 2, 1);
+        do setCell(15, 3, 1);  do setCell(15, 4, 1);  do setCell(15, 5, 1);
+        do setCell(15, 6, 1);  do setCell(15, 7, 1);  do setCell(15, 8, 1);
+        do setCell(15, 9, 1);  do setCell(15, 10, 1); do setCell(15, 11, 1);
+        do setCell(15, 12, 1); do setCell(15, 13, 1); do setCell(15, 14, 1);
+        do setCell(15, 15, 1); do setCell(15, 16, 1); do setCell(15, 17, 1);
+        do setCell(15, 18, 1); do setCell(15, 19, 1); do setCell(15, 20, 1);
+        do setCell(15, 21, 1); do setCell(15, 22, 1); do setCell(15, 23, 1);
+        do setCell(15, 24, 1); do setCell(15, 25, 1); do setCell(15, 26, 1);
+        do setCell(15, 27, 1); do setCell(15, 28, 1); do setCell(15, 29, 1);
+        do setCell(15, 30, 1); do setCell(15, 31, 1);
+
+        do setCell(1, 0, 1);  do setCell(2, 0, 1);  do setCell(3, 0, 1);
+        do setCell(4, 0, 1);  do setCell(5, 0, 1);  do setCell(6, 0, 1);
+        do setCell(7, 0, 1);  do setCell(8, 0, 1);  do setCell(9, 0, 1);
+        do setCell(10, 0, 1); do setCell(11, 0, 1); do setCell(12, 0, 1);
+        do setCell(13, 0, 1); do setCell(14, 0, 1);
+
+        do setCell(1, 31, 1);  do setCell(2, 31, 1);  do setCell(3, 31, 1);
+        do setCell(4, 31, 1);  do setCell(5, 31, 1);  do setCell(6, 31, 1);
+        do setCell(7, 31, 1);  do setCell(8, 31, 1);  do setCell(9, 31, 1);
+        do setCell(10, 31, 1); do setCell(11, 31, 1); do setCell(12, 31, 1);
+        do setCell(13, 31, 1); do setCell(14, 31, 1);
+
+        do setCell(2, 2, 1);  do setCell(2, 3, 1);  do setCell(2, 4, 1);
+        do setCell(2, 8, 1);  do setCell(2, 9, 1);  do setCell(2, 10, 1);
+        do setCell(2, 15, 1); do setCell(2, 16, 1);
+        do setCell(2, 21, 1); do setCell(2, 22, 1); do setCell(2, 23, 1);
+        do setCell(2, 28, 1); do setCell(2, 29, 1);
+
+        do setCell(4, 2, 1);  do setCell(5, 2, 1);  do setCell(6, 2, 1);
+        do setCell(4, 6, 1);  do setCell(4, 7, 1);  do setCell(4, 8, 1);
+        do setCell(4, 12, 1); do setCell(5, 12, 1); do setCell(6, 12, 1);
+        do setCell(4, 18, 1); do setCell(4, 19, 1);
+        do setCell(4, 24, 1); do setCell(5, 24, 1); do setCell(6, 24, 1);
+        do setCell(4, 28, 1); do setCell(4, 29, 1);
+
+        do setCell(7, 4, 1);  do setCell(7, 5, 1);  do setCell(7, 6, 1);
+        do setCell(7, 10, 1); do setCell(7, 15, 1); do setCell(7, 16, 1);
+        do setCell(7, 20, 1); do setCell(7, 21, 1); do setCell(7, 26, 1);
+        do setCell(7, 27, 1); do setCell(7, 28, 1);
+
+        do setCell(9, 2, 1);  do setCell(9, 3, 1);
+        do setCell(9, 8, 1);  do setCell(9, 9, 1);  do setCell(9, 10, 1);
+        do setCell(9, 14, 1); do setCell(9, 15, 1);
+        do setCell(9, 19, 1); do setCell(9, 20, 1); do setCell(9, 21, 1);
+        do setCell(9, 26, 1); do setCell(9, 29, 1); do setCell(9, 30, 1);
+
+        do setCell(11, 4, 1); do setCell(11, 5, 1);
+        do setCell(11, 10, 1); do setCell(11, 11, 1); do setCell(11, 12, 1);
+        do setCell(11, 16, 1); do setCell(11, 17, 1);
+        do setCell(11, 22, 1); do setCell(11, 23, 1);
+        do setCell(11, 27, 1); do setCell(11, 28, 1);
+
+        do setCell(13, 2, 1); do setCell(13, 3, 1); do setCell(13, 4, 1);
+        do setCell(13, 8, 1); do setCell(13, 9, 1);
+        do setCell(13, 13, 1); do setCell(13, 14, 1); do setCell(13, 15, 1);
+        do setCell(13, 20, 1); do setCell(13, 21, 1);
+        do setCell(13, 25, 1); do setCell(13, 26, 1); do setCell(13, 27, 1);
+
+
+        return this;
+    }
+
+    //Verificacion Camino o Pared
+    method int getCell(int row, int col) {
+        return grid[(row * cols) + col];
+    }
+
+    //Asignamiento de valor
+    method void setCell(int row, int col, int value) {
+        let grid[(row * cols) + col] = value;
+        return;
+    }
+
+
+    method int getRows() {
+        return rows;
+    }
+
+
+    method int getCols() {
+        return cols;
+    }
+
+    //Liberar memoria
+    method void dispose() {
+        do grid.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+}

@@ -1,0 +1,33 @@
+class Main {
+
+    function void main() {
+        var Map map;
+        var MapRenderer renderer;
+        var Player player;
+        var int originX;
+        var int originY;
+
+        // Origen del mapa centrado en pantalla
+        let originX = 128;
+        let originY = 64;
+
+        // Inicializar componentes
+        let map      = Map.new();
+        let renderer = MapRenderer.new(map, originX, originY);
+        let player   = Player.new(map, originX, originY);
+
+        // Renderizar mapa estatico
+        do Screen.clearScreen();
+        do renderer.drawMap();
+
+        // Entregar control al jugador
+        do player.run();
+
+        // Liberar memoria
+        do player.dispose();
+        do renderer.dispose();
+        do map.dispose();
+
+        return;
+    }
+}

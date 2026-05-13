@@ -1,0 +1,151 @@
+class Player {
+
+    field int row;       // Fila actual en el grid (0-15)
+    field int col;       // Columna actual en el grid (0-31)
+    field int direction; // Direccion actual: 0=ninguna, 1=arriba, 2=abajo, 3=izquierda, 4=derecha
+    field Map map;       // Referencia al mapa logico (para colisiones)
+    field int originX;   // Coordenada X de inicio del mapa en pantalla
+    field int originY;   // Coordenada Y de inicio del mapa en pantalla
+    field int cellSize;  // Tamanio de celda en pixeles (8)
+
+    constructor Player new(Map aMap, int x, int y) {
+        let map       = aMap;
+        let originX   = x;
+        let originY   = y;
+        let cellSize  = 8;
+        let row       = 8;   // Centro vertical  
+        let col       = 16;  // Centro horizontal 
+        let direction = 0;
+        return this;
+    }
+
+    method int getRow() {
+        return row;
+    }
+
+    method int getCol() {
+        return col;
+    }
+
+    // Iniciar al jugador y esperar orden de movimiento
+    method void run() {
+        var char key;
+        var boolean exit;
+
+        let exit = false;
+        do drawSprite(row, col);
+
+        while (~exit) {
+
+            // Esperar tecla presionada; mover mientras se espera
+            while (key = 0) {
+                let key = Keyboard.keyPressed();
+                do move();
+            }
+
+            // Actualizar direccion o salir segun la tecla
+            if (key = 81)  { let exit = true; }
+            if (key = 131) { let direction = 1; }  // Arriba
+            if (key = 133) { let direction = 2; }  // Abajo
+            if (key = 130) { let direction = 3; }  // Izquierda
+            if (key = 132) { let direction = 4; }  // Derecha
+
+            // Mover continuamente mientras la tecla este sostenida
+            while (~(key = 0)) {
+                let key = Keyboard.keyPressed();
+                do move();
+            }
+        }
+
+        return;
+    }
+
+    //Movimiento del jugador
+    method void move() {
+        var int newRow;
+        var int newCol;
+
+        let newRow = row;
+        let newCol = col;
+
+        if (direction = 1) { let newRow = row - 1; }
+        if (direction = 2) { let newRow = row + 1; }
+        if (direction = 3) { let newCol = col - 1; }
+        if (direction = 4) { let newCol = col + 1; }
+
+        // Verificar colision
+        if (map.getCell(newRow, newCol) = 0) {
+            do restoreCell(row, col);  // Restaurar celda anterior
+            let row = newRow;
+            let col = newCol;
+            do drawSprite(row, col);   // Dibujar en nueva posicion
+        }
+
+        do Sys.wait(150);
+        return;
+    }
+
+    //Coordenada X
+    method int pixelX(int c) {
+        return originX + (c * cellSize);
+    }
+
+    //Coordenada Y
+    method int pixelY(int r) {
+        return originY + (r * cellSize);
+    }
+
+    //Redibujar celda tras paso de personaje
+    method void restoreCell(int r, int c) {
+        var boolean isWall;
+        let isWall = map.getCell(r, c) = 1;
+        do Screen.setColor(isWall);
+        do Screen.drawRectangle(pixelX(c),     pixelY(r),
+                                pixelX(c) + 7, pixelY(r) + 7);
+        return;
+    }
+
+
+    //Dibujo del elefante
+    method void drawSprite(int r, int c) {
+        var int px;
+        var int py;
+
+        let px = pixelX(c);
+        let py = pixelY(r);
+
+        // Limpiar celda
+        do Screen.setColor(false);
+        do Screen.drawRectangle(px, py, px + 7, py + 7);
+
+        do Screen.setColor(true);
+
+        do Screen.drawRectangle(px + 2, py,     px + 5, py);
+
+        do Screen.drawRectangle(px + 1, py + 1, px + 7, py + 1);
+
+        do Screen.drawRectangle(px + 1, py + 2, px + 1, py + 2);
+        do Screen.drawRectangle(px + 3, py + 2, px + 7, py + 2);
+
+        do Screen.drawRectangle(px,     py + 3, px + 7, py + 3);
+
+        do Screen.drawRectangle(px,     py + 4, px + 1, py + 4);
+        do Screen.drawRectangle(px + 4, py + 4, px + 7, py + 4);
+
+        do Screen.drawRectangle(px + 1, py + 5, px + 1, py + 5);
+        do Screen.drawRectangle(px + 4, py + 5, px + 4, py + 5);
+        do Screen.drawRectangle(px + 7, py + 5, px + 7, py + 5);
+
+        do Screen.drawRectangle(px + 2, py + 6, px + 2, py + 6);
+        do Screen.drawRectangle(px + 4, py + 6, px + 4, py + 6);
+        do Screen.drawRectangle(px + 7, py + 6, px + 7, py + 6);
+
+        return;
+    }
+
+    //Liberar memoria
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+}
